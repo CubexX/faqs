@@ -33,3 +33,17 @@ class Tweet(models.Model):
     @property
     def total_likes(self):
         return self.likes.count()
+
+
+###################################################################
+
+>>> tweet = Tweet.objects.create(body='People are space puppets')
+
+>>> tweet_model_type = ContentType.objects.get_for_model(tweet)
+>>> Like.objects.create(content_type=tweet_model_type, object_id=tweet.id, user=user)
+>>> Like.objects.count()
+1
+>>> Like.objects.first().content_object
+<Tweet: People are space puppets>
+>>> tweet.total_likes
+1
