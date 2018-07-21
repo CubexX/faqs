@@ -12,3 +12,24 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+
+###################################################################
+
+
+from django.contrib.contenttypes.fields import GenericRelation
+from django.db import models
+
+from likes.models import Like
+
+
+class Tweet(models.Model):
+    body = models.CharField(max_length=140)
+    likes = GenericRelation(Like)
+
+    def __str__(self):
+        return self.body
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
